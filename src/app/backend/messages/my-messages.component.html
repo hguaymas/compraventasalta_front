@@ -1,0 +1,87 @@
+<app-breadcrumbs-backend [title]="'Mis Mensajes'" [active]="'Mis Mensajes'"
+                         [breadcrumbs]="[{link: '/backend', title: 'Inicio'}]"></app-breadcrumbs-backend>
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+					Section Start
+			*************************************-->
+    <section class="tg-dbsectionspace tg-haslayout">
+        <div class="row">
+            <form class="tg-formtheme tg-formdashboard">
+                <fieldset>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="tg-dashboardbox">
+                            <div class="tg-dashboardboxtitle">
+                                <h2>Mensajes recibidos desde Mis Anuncios</h2>
+                            </div>
+                            <div class="tg-dashboardholder" *ngIf="!messages || messages.length == 0">
+                                <p>No has recibido ningún mensaje todavía</p>
+                            </div>
+                            <div class="tg-dashboardholder tg-offersmessages tg-offersmessageswithsearch" *ngIf="messages && messages.length > 0">
+                                <ul>
+                                    <li>
+                                        <div class="tg-verticalscrollbar tg-dashboardscrollbar">
+                                            <div class="tg-ad tg-dotnotification" [ngClass]="{'active': currentAd && message.ad._id == currentAd._id, 'tg-dotnotification-new': message.readed}" *ngFor="let message of messages; let idx = index;" (click)="showUsers(idx)">
+                                                <figure>
+                                                    <img src="{{config.cloudfront_server + '/' + config.imagesSizes.thumb + '/' + message.ad.mainImage.relativePath}}" alt="{{message.ad.title}}" *ngIf="message.ad.mainImage">
+                                                    <img src="assets/images/no-image.png" alt="{{message.ad.title}}" *ngIf="!message.ad.mainImage">
+                                                </figure>
+                                                <h3>{{message.ad.title}}</h3>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="tg-offerers tg-verticalscrollbar tg-dashboardscrollbar" *ngIf="users && users.length > 0">
+                                            <div class="tg-offerer tg-dotnotification" [ngClass]="{'active': user._id == currentUser._id, 'tg-dotnotification-new': user.readedTo}" *ngFor="let user of users; let idx=index;" (click)="showMessages(idx)">
+                                                <figure>
+                                                    <img src="{{user.photo.pathCdn}}" alt="{{user.visibleName}}" *ngIf="user.photo">
+                                                    <img src="assets/images/no_image_user.png" alt="{{user.visibleName}}" *ngIf="!user.photo">
+                                                </figure>
+                                                <h3>{{user.visibleName}}</h3>
+                                                <!--<a class="tg-btndelete icon-trash" href="javascript:void(0);"></a>-->
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="tg-chatarea" *ngIf="currentUser">
+                                            <div class="tg-messages tg-verticalscrollbar tg-dashboardscrollbar chatscroll" *ngIf="chat && chat.length > 0">
+                                                <div [ngClass]="{'tg-memessage tg-readmessage': msg.author._id == loggedInUser._id , 'tg-offerermessage': msg.author._id != loggedInUser._id}" *ngFor="let msg of chat">
+                                                    <figure>
+                                                        <img src="{{msg.author.photo.pathCdn}}" alt="{{msg.author.visibleName}}" *ngIf="msg.author.photo">
+                                                        <img src="assets/images/no_image_user.png" alt="{{msg.author.visibleName}}" *ngIf="!msg.author.photo">
+                                                    </figure>
+                                                    <div class="tg-description">
+                                                        <p [innerHTML]="msg.text | nl2br"></p>
+                                                        <div class="clearfix"></div>
+                                                        <time datetime="2017-08-08">{{msg.messageDate | date : 'dd/MM/yyyy HH:mm'}}</time>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tg-replaybox" *blockUI="'reply-box'">
+                                                <textarea class="form-control" [formControl]="replayBoxCtrl" name="reply" placeholder="Escribí tu mensaje y presioná Enviar"></textarea>
+                                                <div class="tg-iconbox">
+                                                    <a href="javascript:void(0);" (click)="sendMessage()" pTooltip="Enviar" tooltipPosition="top" [ngClass]="!replayBoxCtrl.valid ? 'disabled' : ''"><i class="glyphicon glyphicon-send"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+    <!--************************************
+            Section End
+    *************************************-->
+
+
+</main>
+<!--************************************
+        Main End
+*************************************-->

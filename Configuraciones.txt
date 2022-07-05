@@ -1,0 +1,14 @@
+Para evitar el error: slick-carousel.component.ts (20,16): Cannot find name 'JQuery'.
+Instalar:
+
+npm install typings --global
+npm install slick-carousel --save
+typings install dt~jquery --save --global
+typings install dt~slick-carousel --save --global
+
+
+Para evitar el error: npm ERR! Cannot read property '0' of undefined
+Desactualizar la version de npm 5.5.1: npm install -g npm@5.5.1
+Desactualizar typescript a 2.4.2 en package.json
+Eliminar node_modules y package-lock.json y agregar archivo .npmrc con el contenido package-lock=false
+Luego npm install

@@ -1,0 +1,15 @@
+<!--************************************
+				Dashboard Banner Start
+		*************************************-->
+<div class="tg-dashboardbanner">
+    <h1>{{title}}</h1>
+    <ol class="tg-breadcrumb">
+        <li *ngFor="let bc of breadcrumbs">
+            <a href="javascript:void(0);" routerLink="{{bc.link}}">{{bc.title}}</a>
+        </li>
+        <li class="tg-active">{{active}}</li>
+    </ol>
+</div>
+<!--************************************
+        Dashboard Banner End
+*************************************-->

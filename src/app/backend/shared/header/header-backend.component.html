@@ -1,0 +1,96 @@
+<!--************************************
+				Header Start
+		*************************************-->
+<header id="tg-dashboardheader" class="tg-dashboardheader tg-haslayout">
+    <div class="tg-rghtbox">
+        <a class="tg-btn" routerLink="/crear-anuncio">
+            <i class="icon-bookmark"></i>
+            <span>Vender</span>
+        </a>
+        <div class="dropdown tg-themedropdown tg-notification">
+            <button class="tg-btndropdown" id="tg-notificationdropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="markAsReaded()">
+                <i class="icon-alarm"></i>
+                <span class="tg-badge" *ngIf="newMessages > 0">{{newMessages}}</span>
+            </button>
+            <ul class="dropdown-menu tg-dropdownmenu tg-verticalscrollbar" aria-labelledby="tg-notificationdropdown">
+                <li *ngFor="let notification of notifications" [ngClass]="{ 'new': notification.readed == false }">
+                    <p><a [routerLink]="notification.link">{{notification.text}}</a></p>
+                    <p><span class="help-block"><small>{{notification.notificationDate | amTimeAgo | capitalize}}</small></span></p>
+                </li>
+                <li *ngIf="notifications.length == 0">
+                    <p>No tenés ninguna notificación</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="tg-sidebarwrapper" class="tg-sidebarwrapper">
+				<span id="tg-btnmenutoggle" class="tg-btnmenutoggle">
+					<i class="fa fa-angle-left"></i>
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="67" viewBox="0 0 20 67">
+						<path id="bg" class="cls-1" d="M20,27.652V39.4C20,52.007,0,54.728,0,67.265,0,106.515.026-39.528,0-.216-0.008,12.32,20,15.042,20,27.652Z"/>
+					</svg>
+				</span>
+        <div id="tg-verticalscrollbar" class="tg-verticalscrollbar">
+            <strong class="tg-logo"><a href="javascript:void(0);" routerLink="/"><img src="assets/images/logo_4.png" alt="image description"></a></strong>
+            <div class="tg-user">
+                <figure>
+                    <!--<span class="tg-bolticon"><i class="fa fa-bolt"></i></span>-->
+                    <a href="javascript:void(0);"><img src="{{loggedInUser.photo.pathCdn}}" alt="{{loggedInUser.username}}" *ngIf="loggedInUser.photo"></a>
+                    <a href="javascript:void(0);"><img src="assets/images/no_image_profile2.png" alt="{{loggedInUser.username}}" *ngIf="!loggedInUser.photo"></a>
+                </figure>
+                <div class="tg-usercontent">
+                    <h3>{{loggedInUser.username}}</h3>
+                    <h4>Usuario estándar</h4>
+                </div>
+                <a class="tg-btnedit" routerLink="/backend/mi-perfil" pTooltip="Editar perfil" tooltipPosition="top"><i class="icon-pencil"></i></a>
+            </div>
+            <nav id="tg-navdashboard" class="tg-navdashboard">
+                <ul>
+                    <li routerLinkActive="tg-active">
+                        <a href="javascript:void(0);" routerLink="/backend/mis-avisos">
+                            <i class="icon-layers"></i>
+                            <span>Mis Avisos</span>
+                        </a>
+                    </li>
+                    <li class="menu-item-has-children" routerLinkActive="tg-active tg-open" #rla="routerLinkActive">
+                        <a href="javascript:void(0);" routerLink="/backend/mis-mensajes/recibidos">
+                            <i class="icon-envelope"></i>
+                            <span>Mis Mensajes</span>
+                        </a>
+                        <ul class="sub-menu" [ngStyle]="{'display': rla.isActive ? 'block' : 'none'}">
+                            <li routerLinkActive="tg-active tg-open"><a routerLink="/backend/mis-mensajes/recibidos">Recibidos</a></li>
+                            <li routerLinkActive="tg-active tg-open"><a routerLink="/backend/mis-mensajes/enviados">Enviados</a></li>
+                        </ul>
+
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);">
+                            <i class="icon-heart"></i>
+                            <span>Mis Favoritos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" (click)="onLogout()">
+                            <i class="icon-exit"></i>
+                            <span>Salir</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="tg-socialandappicons">
+                <ul class="tg-socialicons">
+                    <li class="tg-facebook"><a href="https://www.facebook.com/compraventasalta.com.ar" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                    <li class="tg-twitter"><a href="https://twitter.com/CompraVentaSalta" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                    <li class="tg-rss"><a href="javascript:void(0);"><i class="fa fa-rss"></i></a></li>
+                </ul>
+                <!--<ul class="tg-appstoreicons">
+                    <li><a href="javascript:void"><img src="assets/images/icons/app-01.png" alt="image description"></a></li>
+                    <li><a href="javascript:void"><img src="assets/images/icons/app-02.png" alt="image description"></a></li>
+                </ul>-->
+            </div>
+        </div>
+    </div>
+</header>
+<!--************************************
+        Header End
+*************************************-->

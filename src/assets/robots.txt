@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /backend/
+Disallow: /crear-anuncio/
+Disallow: /ingresar/
+Disallow: /registrarse/

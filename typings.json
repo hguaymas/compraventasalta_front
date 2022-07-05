@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "chartist": "registry:dt/chartist#0.9.5+20161212190028"
+  },
+  "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20170310222111",
+    "slick-carousel": "registry:dt/slick-carousel#1.6.0+20161119044246"
+  }
+}

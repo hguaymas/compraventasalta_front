@@ -1,0 +1,178 @@
+<aside id="tg-sidebar" class="tg-sidebar">
+    <form class="tg-formtheme tg-formnerrowsearch">
+        <div class="tg-sidebartitle"><h2>Mejorá tu búsqueda:</h2></div>
+        <fieldset>
+            <div id="tg-narrowsearchcollapse" class="tg-themecollapse tg-narrowsearchcollapse">
+                <div class="tg-collapsetitle">
+                    <span class="fa fa-angle-down">Por Categoría</span>
+                </div>
+                <div class="tg-themecollapsecontent">
+                    <ul *ngIf="!category && categories.length > 0">
+                        <li class="ad-list-allcategories parent">
+                            <a href="javascript:void(0);" routerLink="/anuncios" *ngIf="!city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/todas-las-categorias/{{city.slug}}"
+                               *ngIf="city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                        </li>
+                        <li class="ad-list-category" *ngFor="let category of categories">
+                            <a href="javascript:void(0);" routerLink="/anuncios/{{category.slug}}"
+                               *ngIf="!city">
+                                - {{category.name }}
+                            </a>
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/{{category.slug}}/{{city.slug}}" *ngIf="city">
+                                - {{category.name }}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul *ngIf="category && !subcategory">
+                        <li class="ad-list-allcategories parent">
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/todas-las-categorias/{{city.slug}}"
+                               *ngIf="city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                            <a href="javascript:void(0);" [routerLink]="['/anuncios']"
+                               *ngIf="!city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                        </li>
+                        <li class="ad-list-category active">
+                            <i class="fa fa-arrow-right"></i> {{category.name}}
+                        </li>
+                        <li class="ad-list-subcategory" *ngFor="let cat of category?.children">
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/{{cat.slug}}/{{city.slug}}" *ngIf="city">
+                                - {{cat.name}}
+                            </a>
+                            <a href="javascript:void(0);" routerLink="/anuncios/{{cat.slug}}"
+                               *ngIf="!city">
+                                - {{cat.name}}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul *ngIf="subcategory && category">
+                        <li class="ad-list-allcategories parent">
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/todas-las-categorias/{{city.slug}}}"
+                               *ngIf="city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                            <a href="javascript:void(0);" [routerLink]="['/anuncios']"
+                               *ngIf="!city">
+                                <i class="fa fa-arrow-left"></i> Todas las Categorías
+                            </a>
+                        </li>
+                        <li class="ad-list-category parent">
+                            <a href="javascript:void(0);" routerLink="/anuncios/{{category.slug}}">
+                                - {{category.name}}
+                            </a>
+                        </li>
+                        <li class="ad-list-subcategory active">
+                            <i class="fa fa-arrow-right"></i> {{subcategory.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="tg-collapsetitle">
+                    <span class="fa fa-angle-down">Por Ciudad</span>
+                </div>
+                <div class="tg-themecollapsecontent">
+                    <ul *ngIf="!city">
+                        <li class="ad-list-allcategories parent">
+                            <a href="javascript:void(0);" [routerLink]="['/anuncios']">
+                                <i class="fa fa-arrow-left"></i> {{config.city}}
+                            </a>
+                        </li>
+                        <li class="ad-list-category" *ngFor="let city of cities">
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/{{subcategory.slug}}/{{city._id.slug}}"
+                               *ngIf="subcategory">
+                                - {{city._id.name}}
+                            </a>
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/{{category.slug}}/{{city._id.slug}}"
+                               *ngIf="!subcategory && category">
+                                - {{city._id.name}}
+                            </a>
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/todas-las-categorias/{{city._id.slug}}"
+                               *ngIf="!subcategory && !category">
+                                - {{city._id.name}}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul *ngIf="city">
+                        <li class="ad-list-allcategories parent">
+                            <a href="javascript:void(0);"
+                               routerLink="/anuncios/{{subcategory.slug}}" *ngIf="subcategory">
+                                <i class="fa fa-arrow-left"></i> {{config.city}}
+                            </a>
+                            <a href="javascript:void(0);" routerLink="/anuncios/{{category.slug}}"
+                               *ngIf="!subcategory && category">
+                                <i class="fa fa-arrow-left"></i> {{config.city}}
+                            </a>
+                            <a href="javascript:void(0);" [routerLink]="['/anuncios']"
+                               *ngIf="!subcategory && !category">
+                                <i class="fa fa-arrow-left"></i> {{config.city}}
+                            </a>
+                        </li>
+                        <li class="ad-list-category active">
+                            <i class="fa fa-arrow-right"></i> {{city.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="tg-collapsetitle">
+                    <span class="fa fa-angle-down">Precio</span>
+                </div>
+                <div class="tg-themecollapsecontent">
+                    <form [formGroup]="priceForm" (ngSubmit)="onFilterPrice()" method="get">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <input type="text" name="priceFrom" formControlName="priceFrom"
+                                           class="form-control" placeholder="Min"
+                                           [(ngModel)]="priceFrom">
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <input type="text" name="priceTo" formControlName="priceTo"
+                                           class="form-control" placeholder="Max"
+                                           [(ngModel)]="priceTo">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 text-center">
+                                    <button type="submit" class="tg-btn">Filtrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tg-widget tg-widgetadbanner">
+                <div class="tg-adbanner">
+                    <!--<ng-adsense
+                            [adClient]="'ca-pub-0390212348928780'"
+                            [adSlot]="6771199164"
+                            [display]="'inline-block'"
+                            [width]="250"
+                            [height]="250">
+                    </ng-adsense>-->
+                    <ng-adsense
+                            [adClient]="'ca-pub-0390212348928780'"
+                            [adSlot]="9585489796"
+                            [display]="'block'"
+                            [adFormat]="'auto'"
+                    >
+                    </ng-adsense>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</aside>

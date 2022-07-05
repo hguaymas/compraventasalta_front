@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /backend
+Disallow: /ingresar
+Disallow: /registrarse
+Disallow: /recuperar-password
+Disallow: /crear-anuncio

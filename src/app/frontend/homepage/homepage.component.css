@@ -1,0 +1,19 @@
+:host::ng-deep .owl-carousel{
+    margin: 0 auto;
+}
+
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+}
+
+.tg-formtheme {
+    width: 50%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    float: none;
+}
+

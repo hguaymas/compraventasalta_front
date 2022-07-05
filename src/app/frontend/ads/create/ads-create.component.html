@@ -1,0 +1,295 @@
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+            Section Start
+    *************************************-->
+    <section class="tg-haslayout">
+        <div class="row">
+            <form [formGroup]="adForm" class="tg-formtheme tg-formdashboard" (ngSubmit)="onSubmit()"
+                  enctype="multipart/form-data">
+                <fieldset>
+                    <div class="tg-postanad">
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-lg-offset-2" *blockUI="'create_ad'">
+                            <div class="tg-dashboard-naranja">
+                                <div class="tg-dashboardboxtitle">
+                                    <h2>Creá tu aviso clasificado GRATIS!</h2>
+                                </div>
+                                <div class="tg-dashboardholder">
+                                    <div class="form-group text-center">
+                                        <a href="#" class="tg-btn" data-toggle="modal" data-target=".tg-categorymodal">Seleccioná
+                                            la Categoría</a>
+                                    </div>
+                                    <div class="form-group" *ngIf="selectedCategory && selectedSubcategory">
+                                        <ol class="tg-categorysequence">
+                                            <li>{{selectedCategory.name}}</li>
+                                            <li>{{selectedSubcategory.name}} - <a href="javascript:void(0);"
+                                                                                  data-toggle="modal"
+                                                                                  data-target=".tg-categorymodal">(Cambiar)</a>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                        <span class="help-block text-danger"
+                                              *ngIf="errorCategory"><small>Seleccioná la categoría y subcategoría de tu anuncio</small></span>
+                                    <div class="form-group">
+                                        <label for="title" class="required">Título</label>
+                                        <input type="text" name="title" id="title" formControlName="title"
+                                               class="form-control" placeholder="Título" #title>
+                                        <small class="help-block">Un buen título debería contener al menos 50 caracteres</small>
+                                        <span class="help-block text-danger" *ngIf="adForm.get('title').invalid && (adForm.get('title').dirty || adForm.get('title').touched)"
+                                              >
+                                            <small *ngIf="adForm.get('title').errors.required">Tu anuncio necesita un título</small>
+                                            <small *ngIf="adForm.get('title').errors.minlength">El título debe contener al menos 10 caracteres</small>
+                                        </span>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="content" class="required">Descripción</label>
+                                        <textarea id="content" formControlName="content" class="form-control" rows="5"
+                                                  placeholder="Describí tu anuncio. Al menos 10 caracteres."></textarea>
+                                        <span class="help-block text-danger" *ngIf="adForm.get('content').invalid && (adForm.get('content').dirty || adForm.get('content').touched)"
+                                        >
+                                            <small *ngIf="adForm.get('content').errors.required">La descripción del anuncio es obligatoria</small>
+                                            <small *ngIf="adForm.get('content').errors.minlength">La descripción del anuncio requiere al menos 10 caracteres</small>
+                                        </span>
+                                    </div>
+                                    <div class="form-group" *ngIf="selectedSubcategory && selectedSubcategory.hasPrice">
+                                        <label for="price">Precio</label>
+                                        <div class="row" id="price">
+                                            <div class="col-md-3">
+                                                <select class="form-control" formControlName="currency">
+                                                    <option value=""></option>
+                                                    <option *ngFor="let currency of currencies" value="{{currency}}">
+                                                        {{currency}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" name="price" formControlName="price"
+                                                       class="form-control" placeholder="Precio">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select class="form-control" formControlName="priceType">
+                                                    <option value=""></option>
+                                                    <option *ngFor="let priceType of priceTypes"
+                                                            value="{{priceType.value}}">{{priceType.text}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="tg-fileuploadlabel" [ngStyle]="{'border-color': errorImage ? '#fb9678' : '#eaedef'}" for="tg-photogallery">
+                                        <div class="tg-btn">Seleccionar imagenes</div>
+                                        <span>Los formatos aceptados son .jpg, .gif y .png. El tamaño máximo permitido para los archivos es 10 MB.</span>
+                                        <span>Click en cualquier parte del recuadro para cargar la foto</span>
+                                        <input id="tg-photogallery" accept="image/*" class="tg-fileinput" type="file"
+                                               name="file" (change)="addImage($event)">
+                                    </label>
+                                    <span class="help-block text-danger"
+                                          *ngIf="errorImage"><small>{{errorImage}}</small></span>
+                                    <div class="tg-horizontalthemescrollbar tg-profilephotogallery ad-create">
+                                        <ul>
+                                            <li *ngFor="let image of images">
+                                                <figure>
+                                                    <img src="{{image.preview.src}}" alt="{{title.value}}">
+                                                    <i pTooltip="Quitar imagen" tooltipPosition="top"
+                                                       class="icon-trash delete" (click)="removeImage(image)"
+                                                       ></i>
+                                                    <i [pTooltip]="image.principal ? 'Imagen principal' : 'Elegir como imagen principal'"
+                                                       tooltipPosition="top" class="fa fa-check-square-o principal"
+                                                       [ngClass]="image.principal ? 'active' : ''"
+                                                       (click)="setPrincipal(image)"></i>
+                                                </figure>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="row form-group contact-info" *ngIf="loggedInUser">
+                                        <h4>Información de Contacto</h4>
+                                        <div class="col-md-3">
+                                            <img class="media-object" src="{{loggedInUser.photo.pathCdn}}" alt="{{loggedInUser.visibleName}}" *ngIf="loggedInUser.photo">
+                                            <img class="media-object" src="assets/images/no_image_user.png" alt="{{loggedInUser.visibleName}}" *ngIf="!loggedInUser.photo">
+                                        </div>
+                                        <div class="col-md-9">
+                                                    <h5 class="media-heading">{{loggedInUser.visibleName}}</h5>
+                                                    <p><i class="icon-mail"></i> {{loggedInUser.email}} <small>(no se publicará)</small></p>
+                                                    <p *ngIf="loggedInUser.phone"><i class="icon-phone-handset"></i> {{loggedInUser.phone}} - <a data-toggle="modal" data-target=".tg-phonemodal">(Cambiar)</a></p>
+                                                    <p *ngIf="!loggedInUser.phone"><i class="icon-phone-handset"></i> <a data-toggle="modal" data-target=".tg-phonemodal">Agregá tu Teléfono</a></p>
+                                                    <p *ngIf="loggedInUser.city"><i class="icon-location2"></i> {{loggedInUser.city.name}} - <a data-toggle="modal" data-target=".tg-citymodal">(Cambiar)</a></p>
+                                                    <p *ngIf="!loggedInUser.city"><i class="icon-location2"></i> <a data-toggle="modal" data-target=".tg-citymodal">Agregá tu Ciudad</a></p>
+                                                    <span class="help-block text-danger"
+                                                          *ngIf="errorUserCity"><small>Tu anuncio tendrá la ubicación indicada en tu perfil. Por favor, agrega una ubicación</small></span>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="facebookGroups && facebookGroups.length > 0">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div class="tg-dashboard-naranja tg-privacysetting">
+                                                <div class="tg-dashboardboxtitle">
+                                                    <h2>Compartí en tus Grupos de Facebook!</h2>
+                                                </div>
+                                                <div class="tg-dashboardholder">
+                                                    <ul>
+                                                        <li style="padding: 20px 0px; border-top: 3px dashed #eaedef; border-bottom: 3px dashed #eaedef;">
+                                                            <div class="tg-checkbox">
+                                                                <input id="group_0" type="checkbox" name="selectAll" (change)="toggleSelectAll($event)">
+                                                                <label for="group_0">Seleccionar todos</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="tg-verticalscrollbar tg-dashboardscrollbar">
+                                                        <ul>
+                                                            <li *ngFor="let group of facebookGroups; let i = index;" formArrayName="facebookGroups">
+                                                                <div class="tg-checkbox" [formGroupName]="i">
+                                                                    <input
+                                                                            id="group_{{group.id}}"
+                                                                            type="checkbox"
+                                                                            formControlName="facebookGroup"
+                                                                            value="{{group.id}}"
+                                                                            (change)="toggleSelectGroup($event, group)">
+                                                                    <label for="group_{{group.id}}">{{group.name}}</label>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-right ">
+                                        <button class="tg-btn tg-btn-dark" type="button" data-toggle="modal"
+                                                data-target=".tg-loginmodal" *ngIf="!loggedInUser">PUBLICAR
+                                        </button>
+                                        <button class="tg-btn tg-btn-dark" style="margin-top: 15px;" type="submit" *ngIf="loggedInUser">PUBLICAR
+                                        </button>
+                                        <p class="help-block">
+                                            <small>Al publicar un aviso estás de acuerdo y aceptás los <a href="javascript:void(0)" routerLink="/terminos-condiciones" target="_blank">Términos y
+                                                Condiciones</a> de CompraVentaSalta.
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+    <!--************************************
+            Section End
+    *************************************-->
+</main>
+<!--************************************
+        Main End
+*************************************-->
+<app-login-modal (onLoggedIn)="loggedIn($event)" ></app-login-modal>
+
+<!--************************************
+			Theme Modal Box Start
+	*************************************-->
+<div class="modal fade tg-thememodal tg-categorymodal" tabindex="-1" role="dialog" id="modal-categories">
+    <div class="modal-dialog tg-thememodaldialog" role="document">
+        <button type="button" class="tg-close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="modal-content tg-thememodalcontent">
+            <div class="tg-title">
+                <strong>Seleccioná la Categoría</strong>
+            </div>
+            <ul class="tg-subcategories" style="border: 0px;">
+                <li>
+                    <div class="tg-title">
+                        <strong>Categorías</strong>
+                    </div>
+                    <div class="tg-verticalscrollbar tg-dashboardscrollbar">
+                        <div class="tg-category-create-ad" *ngFor="let category of categories"
+                             (click)="selectCategory(category)" [ngClass]="{'active': category == selectedCategory}">
+                            <div class="tg-categoryholder-create-ad">
+                                <figure><img src="{{this.category.icon.pathCdn }}"
+                                             alt="{{category.name}}"></figure>
+                                <h3>{{category.name}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="tg-title">
+                        <strong>Subcategorías</strong>
+                    </div>
+                    <div class=" tg-verticalscrollbar tg-dashboardscrollbar">
+                        <ul *ngIf="selectedCategory" class="subcategories_list">
+                            <li *ngFor="let subcategory of selectedCategory.children"
+                                [ngClass]="{'active': subcategory == selectedSubcategory}"
+                                (click)="selectSubcategory(subcategory)">
+                                <a href="javascript:void(0);">{{subcategory.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--************************************
+        Theme Modal Box End
+*************************************-->
+
+
+<!-- MODAL PHONE -->
+<div class="modal fade tg-thememodal tg-phonemodal tg-modalpriceconverter in" tabindex="-1" role="dialog"
+     id="modal-phone">
+    <div class="modal-dialog tg-thememodaldialog" role="document">
+        <button type="button" class="tg-close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="modal-content tg-thememodalcontent">
+            <div class="tg-logingarea">
+                <h2>Información de Contacto</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="phoneForm" class="tg-formtheme tg-formloging" (ngSubmit)="updatePhone()">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="phone">Teléfono de Contacto</label>
+                                    <input type="text" name="phone" id="phone" class="form-control" formControlName="phone" placeholder="Ingresa el Teléfono" [ngModel]="loggedInUser?.phone">
+                                    <small class="help-block">Esta información se actualizará en tu perfil</small>
+                                </div>
+                                <button class="tg-btn" type="submit">Guardar</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL CITY -->
+<div class="modal fade tg-thememodal tg-citymodal tg-modalpriceconverter in" tabindex="-1" role="dialog"
+     id="modal-city">
+    <div class="modal-dialog tg-thememodaldialog" role="document">
+        <button type="button" class="tg-close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="modal-content tg-thememodalcontent">
+            <div class="tg-logingarea">
+                <h2>Información de Perfil</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="cityForm" class="tg-formtheme tg-formloging" (ngSubmit)="updateCity()">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label for="cityProfile" class="required">Ciudad / Localidad</label>
+                                    <select name="cityProfile" id="cityProfile" formControlName="cityProfile" [ngModel]="loggedInUser?.city"  class="form-control">
+                                        <option value="">Elegí tu Ciudad / Localidad</option>
+                                        <option value="{{city._id}}" *ngFor="let city of cities">{{city.name}}</option>
+                                    </select>
+                                    <small class="help-block">Esta información se actualizará en tu perfil</small>
+                                </div>
+                                <button class="tg-btn" type="submit">Guardar</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

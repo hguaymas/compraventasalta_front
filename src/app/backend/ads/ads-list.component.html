@@ -1,0 +1,108 @@
+<app-breadcrumbs-backend [title]="'Mis Avisos'" [active]="'Mis Avisos'" [breadcrumbs]="[{link: '/backend', title: 'Inicio'}]"></app-breadcrumbs-backend>
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+            Section Start
+    *************************************-->
+    <section class="tg-dbsectionspace tg-haslayout">
+        <div class="row">
+            <form class="tg-formtheme tg-formdashboard">
+                <fieldset>
+                    <div class="col-xs-12 col-sm-12 col-md-12 ">
+                        <div class="tg-dashboardbox">
+                            <div class="tg-dashboardboxtitle">
+                                <h2>Mis Avisos</h2>
+                            </div>
+                            <div class="tg-dashboardholder">
+                                <h4 *ngIf="ads.length == 0">No tenés ningún aviso publicado!. <p class="mt-10"><button class="tg-btn tg-btn-sm tg-btn-dark" routerLink="/crear-anuncio">Publicá ahora!</button></p></h4>
+                                <p-dataList [value]="ads" [paginator]="true" [rows]="5" styleClass="tg-dashboardtable" *ngIf="ads.length > 0" [immutable]="false">
+                                    <ng-template let-ad pTemplate="item">
+                                        <div class="row ad-item">
+                                            <div class=" col-md-3" style="text-align:center">
+
+                                                <figure *ngIf="ad.mainImage">
+                                                    <a href="javascript:void(0);"
+                                                       [routerLink]="['editar', ad._id]" *ngIf="ad.status != 'FINISHED' && ad.status != 'DELETED'">
+                                                        <img src="{{config.cloudfront_server + '/' + config.imagesSizes.small + '/' + ad.mainImage.relativePath}}"
+                                                             alt="{{ad.title}}" class="list">
+                                                    </a>
+                                                    <img src="{{config.cloudfront_server + '/' + config.imagesSizes.small + '/' + ad.mainImage.relativePath}}"
+                                                         alt="{{ad.title}}" class="list" *ngIf="ad.status == 'FINISHED' || ad.status == 'DELETED'">
+                                                </figure>
+
+                                                <figure *ngIf="!ad.mainImage">
+                                                    <a href="javascript:void(0);" [routerLink]="['editar', ad._id]" *ngIf="ad.status != 'FINISHED' && ad.status != 'DELETED'">
+                                                        <img src="assets/images/no-image.png" alt="{{ad.title}}"
+                                                             class="list">
+                                                    </a>
+                                                    <img src="assets/images/no-image.png" alt="{{ad.title}}" *ngIf="ad.status == 'FINISHED' || ad.status == 'DELETED'"
+                                                         class="list">
+                                                </figure>
+
+                                            </div>
+                                            <div class=" col-md-6">
+                                                <div class="row">
+                                                    <div class="col-lg-2 col-sm-4"><h3>Título:</h3></div>
+                                                    <div class="col-lg-10 col-sm-8"><span class="ad-detail">{{ad.title}}</span></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-2 col-sm-4"><h3>Fecha:</h3></div>
+                                                    <div class="col-lg-10 col-sm-8"><span class="ad-detail">{{ad.createdAt | date: 'dd/MM/yyyy'}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-2 col-sm-4"><h3>Categoría:</h3></div>
+                                                    <div class="col-lg-10 col-sm-8"><span class="ad-detail">{{ad.category.name + ' / ' + ad.subcategory.name}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-2 col-sm-4"><h3>Ubicación:</h3></div>
+                                                    <div class="col-lg-10 col-sm-8"><span class="ad-detail">{{ad.city.name}}</span></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-2 col-sm-4"><h3>Estado:</h3></div>
+                                                    <div class="col-lg-10 col-sm-8">
+                                                        <span class="tg-adstatus tg-adstatusactive" *ngIf="ad.status == 'ACTIVE'">Publicado</span>
+                                                        <span class="tg-adstatus tg-adstatusexpired" *ngIf="ad.status == 'PENDING'" pTooltip="Pendiente de revisión"
+                                                              tooltipPosition="top">Publicado</span>
+                                                        <span class="tg-adstatus tg-adstatussold" *ngIf="ad.status == 'HIDDEN'">Oculto</span>
+                                                        <span class="tg-adstatus tg-adstatusdeleted" *ngIf="ad.status == 'DELETED'">Eliminado</span>
+                                                        <span class="tg-adstatus tg-adstatusinactive" *ngIf="ad.status == 'EXPIRED'">Expirado</span>
+                                                        <span class="tg-adstatus tg-adstatusinactive" *ngIf="ad.status == 'FINISHED'">Finalizado / Vendido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button class="btn btn-info" pTooltip="Modificar Aviso"
+                                                        tooltipPosition="top" type="button" [routerLink]="['editar', ad._id]" *ngIf="ad.status != 'FINISHED' && ad.status != 'DELETED' && ad.status != 'EXPIRED'"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-warning" pTooltip="Ocultar Aviso" (click)="hideAd(ad._id)"
+                                                        tooltipPosition="top" *ngIf="ad.status == 'ACTIVE' || ad.status == 'PENDING'"><i class="fa fa-eye-slash"></i></button>
+                                                <button class="btn btn-primary" pTooltip="Mostrar Aviso" (click)="showAd(ad._id)"
+                                                        tooltipPosition="top" *ngIf="ad.status == 'HIDDEN'"><i class="fa fa-eye"></i></button>
+                                                <button class="btn btn-primary" pTooltip="Republicar Aviso" (click)="republishAd(ad._id)"
+                                                        tooltipPosition="top" type="button" *ngIf="ad.status == 'EXPIRED' && ad.status != 'FINISHED'"><i class="fa fa-undo"></i></button>
+                                                <button class="btn btn-danger" pTooltip="Eliminar Aviso" (click)="deleteAd(ad._id)" *ngIf="ad.status != 'FINISHED'"
+                                                        tooltipPosition="top"><i class="fa fa-trash-o"></i></button>
+                                                <button class="btn btn-success" pTooltip="Finalizar / Vendido" (click)="finishAd(ad._id)" *ngIf="ad.status == 'ACTIVE' || ad.status == 'PENDING'"
+                                                        tooltipPosition="top"><i class="fa fa-gavel"></i></button>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dataList>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </section>
+    <!--************************************
+            Section End
+    *************************************-->
+</main>
+<!--************************************
+        Main End
+*************************************-->
+

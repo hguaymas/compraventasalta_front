@@ -1,0 +1,186 @@
+<div class="tg-collapsetitle">
+    <span class="fa fa-angle-down">Por Categoría</span>
+</div>
+<div class="tg-themecollapsecontent">
+    <ul *ngIf="!categorySlug && categories.length > 0">
+        <li class="ad-list-allcategories parent">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: citySlug}" *ngIf="city">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: citySlug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="city && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: citySlug, precioDesde: priceFrom}" *ngIf="city && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: citySlug, precioHasta: priceTo}" *ngIf="city && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!city && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom}" *ngIf="!city && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioHasta: priceTo}" *ngIf="!city && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term}" *ngIf="!city && !priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+        </li>
+        <li class="ad-list-category" *ngFor="let cat of categories">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, ciudad: city.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="city && priceFrom && priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, ciudad: city.slug, precioDesde: priceFrom}" *ngIf="city && priceFrom && !priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, ciudad: city.slug, precioHasta: priceTo}" *ngIf="city && !priceFrom && priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, ciudad: city.slug}" *ngIf="city && !priceFrom && !priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!city && priceFrom && priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, precioDesde: priceFrom}" *ngIf="!city && priceFrom && !priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug, precioHasta: priceTo}" *ngIf="!city && !priceFrom && priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria:cat.category.slug}" *ngIf="!city && !priceFrom && !priceTo">
+                - {{cat.category.name }} ({{cat.count }})
+            </a>
+        </li>
+    </ul>
+    <ul *ngIf="category">
+        <li class="ad-list-allcategories parent">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.slug}" *ngIf="city">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="city && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.slug, precioDesde: priceFrom}" *ngIf="city && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.slug, precioHasta: priceTo}" *ngIf="city && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!city && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom}" *ngIf="!city && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioHasta: priceTo}" *ngIf="!city && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term}" *ngIf="!city && !priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> Todas las Categorías
+            </a>
+        </li>
+        <li class="ad-list-subcategory active">
+            <i class="fa fa-arrow-right"></i> {{category.name}}
+        </li>
+    </ul>
+</div>
+<div class="tg-collapsetitle">
+    <span class="fa fa-angle-down">Por Ciudad</span>
+</div>
+<div class="tg-themecollapsecontent">
+    <ul *ngIf="!city">
+        <li class="ad-list-allcategories parent">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="category && priceFrom && priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioDesde: priceFrom}" *ngIf="category && priceFrom && !priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioHasta: priceTo}" *ngIf="category && !priceFrom && priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug}" *ngIf="category && !priceFrom && !priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term}" *ngIf="!category && !priceFrom && !priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!category && priceFrom && priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom}" *ngIf="!category && priceFrom && !priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioHasta: priceTo}" *ngIf="!category && !priceFrom && priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term}" *ngIf="!category && !priceFrom && !priceTo" >
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+        </li>
+        <li class="ad-list-category" *ngFor="let city of cities">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, ciudad: city.city.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="category && priceFrom && priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, ciudad: city.city.slug, precioDesde: priceFrom}" *ngIf="category && priceFrom && !priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, ciudad: city.city.slug, precioHasta: priceTo}" *ngIf="category && !priceFrom && priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, ciudad: city.city.slug}" *ngIf="category && !priceFrom && !priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.city.slug}" *ngIf="!category && !priceFrom && !priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.city.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!category && priceFrom && priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.city.slug, precioDesde: priceFrom}" *ngIf="!category && priceFrom && !priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, ciudad: city.city.slug, precioHasta: priceTo}" *ngIf="!category && !priceFrom && priceTo">
+                - {{city.city.name}} ({{city.count }})
+            </a>
+        </li>
+    </ul>
+
+    <ul *ngIf="city">
+        <li class="ad-list-allcategories parent">
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="category && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioDesde: priceFrom}" *ngIf="category && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug, precioHasta: priceTo}" *ngIf="category && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, categoria: category.slug}" *ngIf="category && !priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term}" *ngIf="!category && !priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom}" *ngIf="!category && priceFrom && !priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioHasta: priceTo}" *ngIf="!category && !priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+            <a href="javascript:void(0);" routerLink="/buscar" [queryParams]="{q:term, precioDesde: priceFrom, precioHasta: priceTo}" *ngIf="!category && priceFrom && priceTo">
+                <i class="fa fa-arrow-left"></i> {{config.city}}
+            </a>
+        </li>
+        <li class="ad-list-category active">
+            <i class="fa fa-arrow-right"></i> {{city.name}}
+        </li>
+    </ul>
+</div>

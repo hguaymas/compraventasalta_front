@@ -1,0 +1,148 @@
+<!--************************************
+				Header Start
+		*************************************-->
+<header id="tg-header" class="tg-header tg-haslayout">
+    <div class="tg-topbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="col-xs-5 col-sm-5 col-md-6 col-lg-6">
+                            <div class="search-nav">
+                                <form [formGroup]="searchForm" class="tg-formtheme tg-formnerrowsearch" novalidate=""
+                                      (ngSubmit)="searchAds()">
+                                    <div class="tg-inputwithicon">
+                                        <input class="form-control" name="search" placeholder="¿Qué estás buscando?"
+                                               type="search"
+                                               formControlName="term" #searchTerm [ngModel]="term">
+                                        <i class="searchAd icon-magnifier" (click)="searchAds()"
+                                           [ngClass]="!searchForm.valid ? 'disabled' : ''"></i>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-xs-7 col-sm-7 col-md-6 col-lg-6">
+                            <ul class="tg-navcurrency" *ngIf="!loggedInUser">
+                                <li><a routerLink="/ingresar">Ingresar</a></li>
+                                <li><a routerLink="/registrarse">Registrarse</a></li>
+                                <li><a routerLink="/contacto-ayuda">Ayuda</a></li>
+                            </ul>
+                            <div class="dropdown tg-themedropdown tg-userdropdown" *ngIf="loggedInUser">
+                                <a href="javascript:void(0);" id="tg-adminnav" class="tg-btndropdown"
+                                   data-toggle="dropdown">
+                                    <span class="tg-userdp" *ngIf="loggedInUser.photo"><img
+                                            src="{{loggedInUser.photo.pathCdn}}" alt="{{loggedInUser.username}}"></span>
+                                    <span class="tg-userdp" *ngIf="!loggedInUser.photo"><img
+                                            src="assets/images/no_image_user.png"
+                                            alt="{{loggedInUser.username}}"></span>
+                                    <span class="tg-name">{{loggedInUser.username}}</span>
+                                    <span class="tg-role">Usuario estándar</span>
+                                </a>
+                                <ul class="dropdown-menu tg-themedropdownmenu" aria-labelledby="tg-adminnav">
+                                    <li>
+                                        <a routerLink="/backend/mi-perfil">
+                                            <i class="icon-cog"></i>
+                                            <span>Mi Perfil</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" routerLink="/backend/mis-avisos">
+                                            <i class="icon-layers"></i>
+                                            <span>Mis Avisos</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a routerLink="/crear-anuncio">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                            <span>Publicar un aviso</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a routerLink="/backend/mis-mensajes/recibidos">
+                                            <i class="icon-envelope"></i>
+                                            <span>Mis Mensajes</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <i class="icon-heart"></i>
+                                            <span>Mis Favoritos</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" (click)="onLogout()">
+                                            <i class="icon-exit"></i>
+                                            <span>Salir</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tg-navigationarea">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <strong class="tg-logo"><a href="javascript:void(0);" routerLink="/"><img
+                            src="assets/images/logo_4.png" alt="CompraVentaSalta"></a></strong>
+                    <a class="tg-btn" href="javascript:void(0);" routerLink="/crear-anuncio">
+                        <span>Publicar Gratis</span>
+                    </a>
+                    <nav id="tg-nav" class="tg-nav">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#tg-navigation" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div id="tg-navigation" class="collapse navbar-collapse tg-navigation">
+                            <ul>
+                                <li class="menu-item">
+                                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+true}">Inicio</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a routerLink="/anuncios">Categorías</a>
+                                    <ul class="sub-menu">
+                                        <li *ngFor="let category of categories"
+                                            [ngClass]="{'menu-item-has-children': category.children}">
+                                            <a routerLink="/anuncios/{{category.slug}}" >{{category.name}}</a>
+                                            <ul class="sub-menu" *ngIf="category.children">
+                                                <li *ngFor="let children of category.children"><a
+                                                        routerLink="/anuncios/{{children.slug}}">{{children.name}}</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a routerLink="/anuncios/todas-las-categorias">Ciudades</a>
+                                    <ul class="sub-menu">
+                                        <li *ngFor="let city of cities">
+                                            <a routerLink="/anuncios/todas-las-categorias/{{city.slug}}">{{city.name}}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item">
+                                    <a routerLink="/contacto-ayuda" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+true}">Ayuda y Contacto</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--************************************
+        Header End
+*************************************-->

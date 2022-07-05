@@ -1,0 +1,195 @@
+<app-breadcrumbs-backend [title]="'Mi Perfil'" [active]="'Mi Perfil'"
+                         [breadcrumbs]="[{link: '/backend', title: 'Inicio'}]"></app-breadcrumbs-backend>
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+					Section Start
+			*************************************-->
+    <section class="tg-dbsectionspace tg-haslayout" *ngIf="user">
+        <div class="row">
+
+            <!--************************************
+                    Activity Start
+            *************************************-->
+
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 tg-lgcolwidthhalf" *blockUI="'photo'">
+                <form [formGroup]="photoForm" class="tg-formtheme tg-formdashboard" (ngSubmit)="onSubmitPhoto()"
+                      enctype="multipart/form-data">
+                    <fieldset>
+                        <div class="tg-dashboardbox">
+                            <div class="tg-dashboardboxtitle">
+                                <h2>Foto de Perfil</h2>
+                            </div>
+
+                            <div class="tg-dashboardholder">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="tg-fileuploadlabel" for="photo">
+                                            <div class="tg-btn" *ngIf="!photo && !preview"><i class="fa fa-upload"></i> Seleccionar
+                                                Foto...
+                                            </div>
+                                            <div class="tg-btn" *ngIf="photo || preview"><i class="fa fa-refresh"></i> Cambiar
+                                                Foto...
+                                            </div>
+                                            <span>Click en cualquier parte del recuadro para cargar la foto</span>
+                                            <input id="photo" accept="image/*" class="tg-fileinput" type="file"
+                                                   name="file" (change)="fileChange($event)" formControlName="photo">
+                                        </label>
+                                        <div class="mb-5" *ngIf="errorPhoto">
+                                            <span class="help-block text-danger"><small>{{errorPhoto}}</small></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="td-dashboardholder" *ngIf="photo" >
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <p class="text-center">
+                                                    <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="td-dashboardholder" *ngIf="data.image" >
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <p class="text-center">
+                                                    <img class="rounded" [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                                                </p>
+                                                <p><button class="btn btn-warning btn-xs" (click)="removePhoto()" type="button">Quitar</button></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="td-dashboardholder" *ngIf="preview && !data.image" >
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <p class="text-center">
+                                                    <img class="rounded" src="{{preview.src}}" *ngIf="preview"/>
+                                                </p>
+                                                <p><button class="btn btn-warning btn-xs" (click)="removePhoto()" type="button">Quitar</button></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tg-dashboardholder">
+                                <button class="tg-btn" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!--************************************
+                    Activity End
+            *************************************-->
+            <!--************************************
+                    Approved Ads Start
+            *************************************-->
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 tg-lgcolwidthhalf" *blockUI="'profile'">
+                <form [formGroup]="profileForm" class="tg-formtheme tg-formdashboard" (ngSubmit)="onSubmitProfile()" *ngIf="user">
+                    <fieldset>
+                        <div class="tg-dashboardbox">
+                            <div class="tg-dashboardboxtitle">
+                                <h2>Datos de tu Cuenta</h2>
+                            </div>
+                            <div class="tg-dashboardholder">
+
+                                <div class="form-group">
+                                    <label for="username" class="required">Nombre</label>
+                                    <input type="text" id="username" name="username" formControlName="username"
+                                           class="form-control" placeholder="Nombre" [ngModel]="user?.username">
+                                    <span class="help-block text-danger" *ngIf="profileForm.get('username').touched && profileForm.get('username').hasError('required')"><small>El nombre es obligatorio</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city" class="required">Ciudad</label>
+                                    <select name="city" id="city" formControlName="city" class="form-control" [ngModel]="user.city?._id">
+                                        <option value="">Elegí tu Ciudad / Localidad</option>
+                                        <option value="{{c._id}}" *ngFor="let c of cities">{{c.name}}</option>
+                                    </select>
+                                    <span class="help-block text-danger" *ngIf="profileForm.get('city').touched && profileForm.get('city').hasError('required')"><small>Seleccioná tu ciudad</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Teléfono</label>
+                                    <input type="text" id="phone" name="phone" formControlName="phone"
+                                           class="form-control" placeholder="Teléfono" [ngModel]="user?.phone">
+                                </div>
+                                <button class="tg-btn" type="submit" [disabled]="!profileForm.valid">Guardar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!--************************************
+                    Approved Ads End
+            *************************************-->
+            <!--************************************
+                    Approved Ads Start
+            *************************************-->
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 tg-lgcolwidthhalf" *blockUI="'password'">
+                <form [formGroup]="passwordForm" class="tg-formtheme tg-formdashboard" (ngSubmit)="onSubmitPassword()">
+                    <fieldset>
+                        <div class="tg-dashboardbox">
+                            <div class="tg-dashboardboxtitle">
+                                <h2>Cambiar Contraseña</h2>
+                            </div>
+                            <div class="tg-dashboardholder">
+                                <div class="form-group">
+                                    <label for="password" class="required">Contraseña Actual</label>
+                                    <input type="password" id="password" name="password" formControlName="password"
+                                           class="form-control"
+                                           placeholder="Contraseña actual">
+                                    <span class="help-block text-danger" *ngIf="passwordForm.get('password').invalid && (passwordForm.get('password').dirty || passwordForm.get('password').touched)"
+                                    >
+                                            <small *ngIf="passwordForm.get('password').errors.required">La contraseña actual es obligatoria</small>
+                                        </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword" class="required">Nueva Contraseña</label>
+                                    <input type="password" id="newPassword" name="newPassword"
+                                           formControlName="newPassword" class="form-control"
+                                           placeholder="Nueva contraseña">
+                                    <span class="help-block text-danger" *ngIf="passwordForm.get('newPassword').invalid && (passwordForm.get('newPassword').dirty || passwordForm.get('newPassword').touched)"
+                                    >
+                                            <small *ngIf="passwordForm.get('newPassword').errors.required">La nueva contraseña es obligatoria</small>
+                                        </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword" class="required">Confirmar Nueva Contraseña</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                           formControlName="confirmPassword" class="form-control"
+                                           placeholder="Confirmar nueva contraseña">
+                                    <span class="help-block text-danger" *ngIf="passwordForm.get('confirmPassword').invalid && (passwordForm.get('confirmPassword').dirty || passwordForm.get('confirmPassword').touched)">
+                                            <small *ngIf="passwordForm.get('confirmPassword').errors.required">Debe repetir la nueva contraseña</small>
+                                    </span>
+                                    <span class="help-block text-danger" *ngIf="passwordForm.get('confirmPassword').invalid && (passwordForm.get('confirmPassword').dirty || passwordForm.get('confirmPassword').touched)">
+                                            <small *ngIf="passwordForm.get('confirmPassword').errors.passwordMatch">Las contraseñas no coinciden</small>
+                                        </span>
+                                </div>
+                                <button class="tg-btn" type="submit">Actualizar</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!--************************************
+        Section End
+    *************************************-->
+
+</main>
+<!--************************************
+        Main End
+*************************************-->

@@ -1,0 +1,79 @@
+<div class="tg-contactarea">
+    <div class="tg-sectionhead">
+        <div class="tg-title">
+            <h2>Contactá con Nosotros</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-md-offset-2">
+            <div class="row">
+                <form [formGroup]="contactForm" class="tg-formtheme tg-formdashboard"
+                      (ngSubmit)="onSubmit()">
+                    <fieldset>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <input type="text" name="firstname" formControlName="firstname" class="form-control"
+                                       placeholder="Nombre*">
+                                <span class="help-block text-danger" *ngIf="contactForm.get('firstname').invalid && (contactForm.get('firstname').dirty || contactForm.get('firstname').touched)">
+                                                    <small *ngIf="contactForm.get('firstname').errors.required">Debes ingresar tu email</small>
+                                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <input type="text" name="lastname" class="form-control" formControlName="lastname"
+                                       placeholder="Apellido*">
+                                <span class="help-block text-danger" *ngIf="contactForm.get('lastname').invalid && (contactForm.get('lastname').dirty || contactForm.get('lastname').touched)">
+                                                    <small *ngIf="contactForm.get('lastname').errors.required">Debes ingresar tu email</small>
+                                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" formControlName="email"
+                                       placeholder="Email*">
+                                <span class="help-block text-danger" *ngIf="contactForm.get('email').invalid && (contactForm.get('email').dirty || contactForm.get('email').touched)">
+                                                    <small *ngIf="contactForm.get('email').errors.required">Debes ingresar tu email</small>
+                                                    <small *ngIf="contactForm.get('email').errors.pattern">El email ingresado es inválido</small>
+                                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <input type="text" name="subject" class="form-control" formControlName="subject"
+                                       placeholder="Asunto*">
+                                <span class="help-block text-danger" *ngIf="contactForm.get('subject').invalid && (contactForm.get('subject').dirty || contactForm.get('subject').touched)">
+                                                    <small *ngIf="contactForm.get('subject').errors.required">Debes escribir un asunto</small>
+                                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Comentarios*" formControlName="comments"></textarea>
+                                <span class="help-block text-danger" *ngIf="contactForm.get('comments').invalid && (contactForm.get('comments').dirty || contactForm.get('comments').touched)">
+                                                    <small *ngIf="contactForm.get('comments').errors.required">Debes escribir tus comentarios</small>
+                                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <re-captcha formControlName="recaptcha"></re-captcha>
+                                <span class="help-block text-danger" *ngIf="contactForm.get('recaptcha').invalid && (contactForm.get('recaptcha').dirty || contactForm.get('recaptcha').touched)">
+                                                    <small *ngIf="contactForm.get('recaptcha').errors.required">Debes verificar mediante ReCaptcha</small>
+                                                    <small *ngIf="contactForm.get('recaptcha').errors.invalid">La verificación resultó inválida</small>
+                                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-group">
+                                <button *ngIf="sendingMessage" class="tg-btn tg-btn-dark" type="submit" [disabled]="!contactForm.valid || sendingMessage"><i class="fa fa-spinner fa-pulse"></i> Enviando Mensaje...</button>
+                                <button *ngIf="!sendingMessage" class="tg-btn tg-btn-dark" type="submit" [disabled]="!contactForm.valid || sendingMessage">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

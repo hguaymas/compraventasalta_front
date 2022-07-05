@@ -1,0 +1,105 @@
+<section class="tg-dbsectionspace tg-haslayout">
+    <div class="row">
+        <form [formGroup]="myForm" class="tg-formtheme tg-formdashboard" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+            <fieldset>
+
+                <div class="col-md-12 tg-lgcolwidthhalf">
+                    <div class="tg-dashboardbox">
+                        <div class="tg-dashboardboxtitle">
+                            <h2>Detalles de la Categoría</h2>
+                        </div>
+                        <div class="tg-dashboardholder">
+                            <div class="form-group">
+                                <label for="parentId" class="required">Categoría Superior</label>
+                                <select class="custom-select" id="parentId" formControlName="parentId" [ngModel]="category?.parentId">
+                                    <option value="">Es categoría base</option>
+                                    <option value="{{cat._id}}" *ngFor="let cat of categories">{{cat.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="required">Nombre</label>
+                                <input id="name" type="text" class="form-control" placeholder="Nombre" formControlName="name" [ngModel]="category?.name">
+                                <span class="help-block text-danger" *ngIf="myForm.get('name').touched && myForm.get('name').hasError('required')"><small>El nombre es obligatorio</small></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Descripción</label>
+                                <textarea id="description" formControlName="description" [ngModel]="category?.description" class="form-control" placeholder="Descripción" ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="icon">Ícono</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="tg-fileuploadlabel" for="icon">
+                                            <div class="tg-btn" *ngIf="!icon"><i class="fa fa-upload"></i> Seleccionar ícono... </div>
+                                            <div class="tg-btn" *ngIf="icon"><i class="fa fa-refresh"></i> Cambiar ícono... </div>
+                                            <span>Click en cualquier parte del recuadro para cargar la foto</span>
+                                            <input id="icon" accept="image/*" class="tg-fileinput" type="file" name="file" (change)="fileChange($event)">
+                                        </label>
+                                        <div class="mb-5" *ngIf="errorIcon">
+                                            <span class="help-block text-danger">{{errorIcon}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="icon">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <p class="text-center">
+                                                    <img src="{{preview.src}}" *ngIf="preview" style="max-width: 200px; max-height: 200px;"/>
+                                                </p>
+                                                <button class="btn btn-warning btn-xs" (click)="removeIcon()">Quitar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="color">Color</label>
+                                        <input [cpPosition]="'bottom'" [cpOKButtonClass]= "'btn btn-primary btn-xs'" [cpOutputFormat]="'hex'" [value]="color" [cpOKButton]="true" [(colorPicker)]="color" [style.background]="color" type="text" id="color" formControlName="color" class="form-control" placeholder="Color">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <span class="tg-checkbox">
+                                            <input type="checkbox" id="hasPrice" formControlName="hasPrice" [ngModel]="category?.hasPrice">
+                                            <label for="hasPrice">Utiliza precio?</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <span class="tg-checkbox">
+                                            <input type="checkbox" id="requiredImage" formControlName="requiredImage" [ngModel]="category?.requiredImage">
+                                            <label for="hasPrice">Requiere foto?</label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="footerText">Texto pie</label>
+                                <textarea id="footerText" formControlName="footerText" [ngModel]="category?.footerText" class="form-control" placeholder="Texto pie de página"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="metaKeywords">META Keywords</label>
+                                <input type="text" id="metaKeywords" formControlName="metaKeywords" [ngModel]="category?.metaKeywords" class="form-control" placeholder="META Keywords">
+                            </div>
+                            <div class="form-group">
+                                <label for="metaTitle">META Title</label>
+                                <input type="text" id="metaTitle" formControlName="metaTitle" [ngModel]="category?.metaTitle" class="form-control" placeholder="META Title">
+                            </div>
+                            <div class="form-group">
+                                <label for="metaDescription">META Description</label>
+                                <textarea id="metaDescription" formControlName="metaDescription" [ngModel]="category?.metaDescription" class="form-control" placeholder="META Description" ></textarea>
+                            </div>
+
+                            <button class="tg-btn" type="submit">Guardar</button>
+                            <button class="btn btn-default" type="button" routerLink="/admin/categories">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

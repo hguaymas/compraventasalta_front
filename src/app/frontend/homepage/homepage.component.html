@@ -1,0 +1,196 @@
+<!--************************************
+				Home Slider Start
+		*************************************-->
+<div id="tg-innerbanner" class="tg-innerbanner tg-haslayout">
+    <figure class="item" [ngStyle]="{background: 'url(../../../assets/images/slider/img-03.jpg) 50%' + randomY + '% no-repeat'}">
+        <figcaption>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="tg-bannercontent">
+                            <h1>Vendé lo que quieras...</h1>
+                            <h2>... cerca tuyo!</h2>
+                            <ng-adsense
+                                    [adClient]="'ca-pub-0390212348928780'"
+                                    [adSlot]="1289342509"
+                                    [display]="'block'"
+                                    [adFormat]="'auto'"
+                            >
+                            </ng-adsense>
+                            <!--<ng-adsense
+                                    [adClient]="'ca-pub-0390212348928780'"
+                                    [adSlot]="7197740421"
+                                    [display]="'inline-block'"
+                                    [width]="728"
+                                    [height]="90">
+                            </ng-adsense>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </figcaption>
+    </figure>
+</div>
+<!--************************************
+        Home Slider End
+*************************************-->
+<!--************************************
+        Main Start
+*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+
+    <!--************************************
+            Featured Ads Start
+    *************************************-->
+    <section class="tg-haslayout">
+        <div class="container">
+            <div class="row">
+                <div id="tg-twocolumns" class="tg-twocolumns">
+                    <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
+                        <ng-container *ngIf="latest.length > 0">
+                            <div class="tg-sectionhead">
+                                <div class="tg-title">
+
+                                </div>
+                                <div class="tg-description">
+                                    <p class="category text-right" style="font-weight: bold;">
+                                        Ver todos los <a routerLink="/anuncios">Avisos</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="tg-haslayout">
+
+                                <div class="tg-ads">
+                                <owl-carousel [options]="owlCarouselConfig" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                                    <div class="col-lg-12 tg-verticaltop" *ngFor="let ad of latest;let i = index">
+                                        <div class="tg-ad tg-verifiedad">
+                                            <figure *ngIf="ad.mainImage">
+                                                <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                                <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                    <img src="{{config.cloudfront_server + '/' + config.imagesSizes.small + '/' + ad.mainImage.relativePath}}"
+                                                         alt="{{ad.title}}"
+                                                         [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                                </a>
+                                                <span class="tg-photocount">{{ad.images?.length}} imagenes</span>
+                                            </figure>
+
+                                            <figure *ngIf="!ad.mainImage">
+                                                <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                                <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                    <img src="assets/images/no-image2.png" alt="{{ad.title}}"
+                                                         [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                                </a>
+                                            </figure>
+                                            <div class="tg-adcontent">
+                                                <ul class="tg-pagesequence">
+                                                    <li><a href="javascript:void(0);">{{ad.category?.name}}</a></li>
+                                                    <li><a href="javascript:void(0);">{{ad.subcategory?.name}}</a></li>
+                                                </ul>
+                                                <div class="tg-adtitle">
+                                                    <h3><a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">{{ad.title}}</a>
+                                                    </h3>
+                                                    <span class="tg-adtitle-verified" *ngIf="ad.status == 'ACTIVE'"
+                                                          pTooltip="Aviso Verificado" tooltipPosition="top"></span>
+                                                    <span class="tg-adtitle-revision" *ngIf="ad.status == 'PENDING'"
+                                                          pTooltip="Aviso en Revisión" tooltipPosition="top"></span>
+                                                </div>
+                                                <time>{{ad.republishedDate | amTimeAgo | capitalize }}</time>
+                                                <div class="tg-adprice" *ngIf="ad.price"><h4>{{ad.currency + ad.price}}
+                                                    ({{config.priceTypeTexts[ad.priceType]}})</h4></div>
+                                                <address>{{ad.city?.name}}</address>
+                                                <div class="tg-phonelike">
+                                                    <fb-like href="{{host + '/anuncio/' + ad.slug}}"></fb-like>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </owl-carousel>
+
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="tg-haslayout">
+                            <ng-adsense
+                                    [adClient]="'ca-pub-0390212348928780'"
+                                    [adSlot]="9585489796"
+                                    [display]="'block'"
+                                    [adFormat]="'auto'"
+                            >
+                            </ng-adsense>
+                        </div>
+                        <div class="tg-sectionhead">
+                            <div class="tg-title">
+
+                            </div>
+                            <div class="tg-description">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="tg-sectionhead">
+                            <div class="tg-title">
+                                <h2>Buscá por Categoría</h2>
+                            </div>
+                            <div class="tg-description">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="tg-haslayout">
+                            <div class="tg-categories" *ngIf="categories.length > 0">
+                                <div class="tg-category" *ngFor="let category of categories">
+                                    <div class="tg-categoryholder" routerLink="/anuncios/{{category.slug}}">
+                                        <figure><img src="{{category.icon.pathCdn}}"
+                                                     alt="{{category.name}}"></figure>
+                                        <h3>{{category.name}}</h3>
+                                    </div>
+                                </div>
+                                <div class="tg-category">
+                                    <div class="tg-categoryholder" routerLink="/anuncios">
+                                        <figure></figure>
+                                        <h3>Todas las <br/>Categorías</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+                        <aside id="tg-sidebar" class="tg-sidebar">
+                            <div class="tg-widget tg-widgettrendingposts">
+                                <div class="tg-sidebartitle"><h2>Seguinos en Facebook!</h2></div>
+                                <div class="tg-widgetcontent">
+                                    <fb-page href="https://www.facebook.com/compraventasalta.com.ar/" [width]="230"></fb-page>
+                                </div>
+                            </div>
+                            <!--<div class="tg-widget tg-widgetadbanner">
+                                <div class="tg-adbanner">
+                                    <ng-adsense
+                                            [adClient]="'ca-pub-0390212348928780'"
+                                            [adSlot]="6771199164"
+                                            [display]="'inline-block'"
+                                            [width]="250"
+                                            [height]="250">
+                                    </ng-adsense>
+                                </div>
+                            </div>-->
+                            <div class="tg-widget tg-widgettrendingposts">
+                                <div class="tg-sidebartitle"><h2>Por Ciudad</h2></div>
+                                <div class="tg-widgetcontent">
+                                    <ul>
+                                        <li *ngFor="let city of cities">
+                                            <a routerLink="/anuncios/todas-las-categorias/{{city.slug}}">
+                                                <span>{{city.name}}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!--************************************
+        Main End
+*************************************-->

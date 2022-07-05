@@ -1,0 +1,49 @@
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+            About Us Start
+    *************************************-->
+    <section class="tg-sectionspace tg-haslayout">
+        <div class="container">
+            <div class="row">
+                <div class="tg-aboutus">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="activated">
+                        <div class="tg-textshortcode">
+                            <div class="tg-titleshortcode">
+                                <h2><span>Bienvenido/a!</span> Tu cuenta ha sido activada!</h2>
+                            </div>
+                            <div class="tg-description">
+                                <p>Desde ahora podrás publicar GRATIS tus anuncios cuando quieras.</p>
+                                <p>Te recomendamos vincular tu cuenta a FACEBOOK, de esta manera tendrás tu cuenta VERIFICADA y podrás ingresar tanto con tus datos de acceso como así también con tu cuenta de Facebook</p>
+                                <p>Tener la cuenta VERIFICADA brinda más seguridad y confianza hacia tus posibles compradores!!!</p>
+                            </div>
+                            <div class="tg-btnbox">
+                                <a class="tg-btn" href="javascript:void(0);" routerLink="/ingresar">Ingresar</a>
+                                <a class="tg-btn" href="javascript:void(0);" routerLink="/">Explorar la web</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="errorMessage">
+                        <div class="tg-textshortcode">
+                            <div class="tg-titleshortcode">
+                                <h2>Problema con la activación de tu cuenta</h2>
+                            </div>
+                            <div class="tg-description">
+                                <p>{{errorMessage}}</p>
+                            </div>
+                            <div class="tg-btnbox">
+                                <a class="tg-btn" href="javascript:void(0);" (click)="sendActivationLink(userId)" *ngIf="userId">Enviar Link de Activación</a>
+                                <a class="tg-btn" href="javascript:void(0);" routerLink="/">Ir al inicio</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!--************************************
+        Main End
+*************************************-->

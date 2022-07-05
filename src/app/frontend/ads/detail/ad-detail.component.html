@@ -1,0 +1,403 @@
+<app-breadcrumbs-frontend></app-breadcrumbs-frontend>
+
+<!--************************************
+				Main Start
+		*************************************-->
+<main id="tg-main" class="tg-main tg-haslayout">
+    <!--************************************
+            About Us Start
+    *************************************-->
+    <div class="container">
+        <div class="row">
+            <ng-template #loading>Cargando...</ng-template>
+            <div id="tg-twocolumns" class="tg-twocolumns" *ngIf="ad">
+                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                    <aside id="tg-sidebar" class="tg-sidebar">
+                        <div class="tg-pricebox" *ngIf="ad.price">
+                            <div id="tg-flagstrapfour" class="tg-flagstrap" data-input-name="country"></div>
+                            <div class="tg-priceandlastupdate">
+                                <span>{{ad.currency ? ad.currency : '$'}}{{ad.price}}{{ad.priceType ? ' - ' + config.priceTypeTexts[ad.priceType] : ''}}</span>
+                                <span>{{ad.republishedDate | amTimeAgo | capitalize }}</span>
+                            </div>
+                        </div>
+                        <div class="tg-sellercontactdetail">
+                            <div class="tg-sellertitle"><h1>Contacto</h1></div>
+                            <div class="tg-sellercontact">
+                                <div class="tg-memberinfobox">
+                                    <figure>
+                                        <a href="javascript:void(0);">
+                                            <img src="{{ad.user.photo.pathCdn}}" alt="{{ad.user.username}}" *ngIf="ad.user.photo">
+                                            <img src="assets/images/no_image_profile2.png" alt="{{ad.user.username}}" *ngIf="!ad.user.photo">
+                                        </a>
+                                    </figure>
+                                    <div class="tg-memberinfo">
+                                        <h3><a href="javascript:void(0);">{{ad.user.username}}</a></h3>
+                                        <span *ngIf="ad.user.createdAt">Miembro desde {{ad.user.createdAt | date : 'dd/MM/yyyy'}}</span>
+                                        <a class="tg-btnseeallads" href="javascript:void(0);">Ver todos sus anuncios</a>
+                                        <span class="tg-verified-user" pTooltip="Usuario verificado con Facebook" tooltipPosition="top" *ngIf="ad.user.verified"></span>
+                                    </div>
+                                </div>
+                                <a class="tg-btnphone" id="btnphone" href="javascript:void(0);" (click)="toggleShowPhone()" *ngIf="ad.user.phone && ad.status != 'FINISHED'">
+                                    <i class="icon-phone-handset"></i>
+                                    <span data-toggle="tooltip" data-placement="top" title="Mostrar Nro. de Teléfono" >
+												<em *ngIf="!showPhone">Mostrar teléfono</em>
+												<em *ngIf="showPhone">{{ad.user.phone}}</em>
+												<span>Clic para {{showPhone ? 'ocultar' : 'mostrar'}} el número</span>
+											</span>
+                                </a>
+
+                                <a class="tg-btnmakeanoffer" href="#" data-toggle="modal" data-target="#modal-login" *ngIf="!loggedInUser && ad.status != 'FINISHED'" (click)="contactButton = true">
+                                    <i class="icon-briefcase"></i>
+                                    <span>
+												<em>Contactar</em>
+												<span>Contactar al Anunciante</span>
+											</span>
+                                </a>
+                                <div *ngIf="ad.status == 'FINISHED'">
+                                    <div class="tg-sellertitle"><h1><i class="fa fa-gavel"></i> AVISO FINALIZADO</h1></div>
+                                </div>
+                                <div *ngIf="loggedInUser && ad.status != 'FINISHED'">
+                                    <div class="tg-sellertitle"><h1><i class="icon-briefcase"></i> Contactar al Anunciante</h1></div>
+                                </div>
+                                <form [formGroup]="contactForm" class="tg-formtheme tg-formmakeanoffer" *ngIf="loggedInUser && ad.status != 'FINISHED'" (ngSubmit)="sendMessage()">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <textarea name="message" formControlName="message" class="form-control" placeholder="Escribí tu Mensaje*"></textarea>
+                                            <span class="help-block text-danger" *ngIf="contactForm.get('message').invalid && (contactForm.get('message').dirty || contactForm.get('message').touched)"
+                                            >
+                                            <small *ngIf="contactForm.get('message').errors.required">Escribí tu mensaje para el anunciante</small>
+                                            <small *ngIf="contactForm.get('message').errors.minlength">El mensaje requiere al menos 10 caracteres</small>
+                                        </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <button *ngIf="sendingMessage" class="tg-btn" type="submit" [disabled]="!contactForm.valid || sendingMessage"><i class="fa fa-spinner fa-pulse"></i> Enviando Mensaje...</button>
+                                            <button *ngIf="!sendingMessage" class="tg-btn" type="submit" [disabled]="!contactForm.valid || sendingMessage">Enviar Mensaje</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <span class="tg-like tg-liked" *ngIf="ad.status != 'FINISHED'"><i class="fa fa-heart">Agregar a Favoritos</i></span>
+                                <span class="tg-spam" data-toggle="modal" data-target="#modal-report-spam"><i class="fa fa-exclamation-triangle">Reportar</i></span>
+                            </div>
+                        </div>
+                        <div class="tg-safetytips">
+                            <div class="tg-safetytipstitle"><h2>Consejos de Seguridad</h2></div>
+                            <owl-carousel id="tg-safetytipsslider" [carouselClasses]="['tg-safetytipsslider', 'slid', 'owl-carousel']" [options]="{items: 1,nav: true,dots: false,autoplay: true,dotsClass: 'tg-sliderdots',navClass: ['tg-prev', 'tg-next'],navContainerClass: 'tg-slidernav',navText: ['<span class=\'icon-chevron-left\'></span>', '<span class=\'icon-chevron-right\'></span>']}">
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 01:</h3>
+                                    <div class="tg-description">
+                                        <p>Mantente alerta si el precio de un artículo está muy por debajo del promedio.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 02:</h3>
+                                    <div class="tg-description">
+                                        <p>Revisa el artículo antes de realizar el pago, y verifica que cuenta con todas la especificaciones anunciadas en el aviso, incluyendo su funcionamiento.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 03:</h3>
+                                    <div class="tg-description">
+                                        <p>Cuidado con las ofertas poco realistas: precios demasiado cómodos, ofertas demasiado atractivas y poco creíbles.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 04:</h3>
+                                    <div class="tg-description">
+                                        <p>La mejor manera de realizar una transacción es pagar el artículo en el momento de la entrega. No hagas transferencias de dinero ni utilices otros métodos de pago.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 05:</h3>
+                                    <div class="tg-description">
+                                        <p>Utiliza el sistema de mensajes de CompraVentaSalta.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 06:</h3>
+                                    <div class="tg-description">
+                                        <p>Si las fotos del aviso son genéricas, solicita al vendedor las fotos especificas del artículo en venta.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 07:</h3>
+                                    <div class="tg-description">
+                                        <p>Procura no enviar dinero como garantía o anticipo.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 08:</h3>
+                                    <div class="tg-description">
+                                        <p>Procura comprar artículos que se encuentren cerca o por lo menos en la misma ciudad.</p>
+                                    </div>
+                                </div>
+                                <div class="item tg-safetytip">
+                                    <h3>TIP # 09:</h3>
+                                    <div class="tg-description">
+                                        <p>Nunca reveles tu nombre de usuario o contraseña a terceros.</p>
+                                    </div>
+                                </div>
+                            </owl-carousel>
+                        </div>
+                        <div class="tg-reportthisadbox">
+                            <!--<ng-adsense
+                                    [adClient]="'ca-pub-0390212348928780'"
+                                    [adSlot]="6771199164"
+                                    [display]="'inline-block'"
+                                    [width]="250"
+                                    [height]="250">
+                            </ng-adsense>-->
+                            <ng-adsense
+                                    [adClient]="'ca-pub-0390212348928780'"
+                                    [adSlot]="1289342509"
+                                    [display]="'block'"
+                                    [adFormat]="'auto'"
+                            >
+                            </ng-adsense>
+                        </div>
+                    </aside>
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+                    <div id="tg-content" class="tg-content">
+                        <div class="tg-ad tg-verifiedad tg-detail tg-addetail">
+                            <div class="tg-adcontent">
+                                <ul class="tg-pagesequence">
+                                    <li><a href="javascript:void(0);" pTooltip="Ver anuncios en {{ad.city.name}}" tooltipPosition="top" [routerLink]="['/anuncios/todas-las-categorias/', ad.city.slug]">{{ad.city.name}}</a></li>
+                                    <li><a href="javascript:void(0);" pTooltip="Ver anuncios de {{ad.category.name}}" tooltipPosition="top" [routerLink]="['/anuncios', ad.category.slug]">{{ad.category.name}}</a></li>
+                                    <li><a href="javascript:void(0);" pTooltip="Ver anuncios de {{ad.subcategory.name}}" tooltipPosition="top" [routerLink]="['/anuncios', ad.subcategory.slug]"><span>{{ad.subcategory.name}}</span></a></li>
+                                </ul>
+                                <div class="tg-adtitle">
+                                    <h2>{{ad.title}}</h2>
+                                    <span class="tg-adtitle-verified" *ngIf="ad.status == 'ACTIVE'" pTooltip="Aviso Verificado" tooltipPosition="top"></span>
+                                    <span class="tg-adtitle-revision" *ngIf="ad.status == 'PENDING'" pTooltip="Aviso en Revisión" tooltipPosition="top"></span>
+                                </div>
+                                <ul class="tg-admetadata">
+                                    <li>De: <a href="javascript:void(0);">{{ad.user.username}}</a></li>
+                                    <li><i class="icon-earth"></i><address>{{ad.city.name}}</address></li>
+                                    <li style="display: none;"><i class="icon-eye"></i><span>15642</span></li>
+                                </ul>
+                                <p><strong>Compartí:</strong></p>
+                                <div class="tg-share">
+                                    <div class="sharethis-inline-share-buttons"></div>
+                                    <div class="tg-adadded">
+                                        <!--<i class="icon-smartphone"></i>-->
+                                        <span *ngIf="ad.updatedAt">{{ad.republishedDate | amTimeAgo | capitalize }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <figure *ngIf="galleryImages.length == 0">
+                                <img src="assets/images/no-image2.png" alt="Anuncio sin fotos" title="Anuncio sin fotos"/>
+                            </figure>
+                            <figure *ngIf="galleryImages.length > 0">
+                                <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                <span class="tg-photocount">{{galleryImages.length}} foto{{galleryImages.length > 1 ? 's' : ''}} </span>
+                                <ngx-gallery [options]="galleryOptions" [images]="galleryImages" *ngIf="galleryImages"></ngx-gallery>
+                            </figure>
+                            <div class="tg-description">
+                                <strong>{{ad.title}}</strong>
+                                <p [innerHTML]="ad.content | nl2br"></p>
+                                <br/>
+                                <div class="sharethis-inline-share-buttons"></div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="tg-authorotherads" *ngIf="adsByUser.length > 0">
+                            <div class="tg-sectionhead">
+                                <div class="tg-title">
+                                    <h2>Más avisos de {{ad.user.username}}</h2>
+                                </div>
+                                <div class="tg-description">
+                                    <p>{{adsByUser.length + 1}} avisos publicados</p>
+                                </div>
+                            </div>
+                            <div id="tg-authoradsslider" class="tg-ads tg-adsvtwo tg-authoradsslider">
+                                <owl-carousel [options]="owlCarouselConfig" [carouselClasses]="['owl-theme', 'row', 'sliding']">
+                                    <ng-container *ngFor="let ad of adsByUser;let i = index">
+                                        <div class="tg-ad tg-verifiedad">
+                                            <figure *ngIf="ad.mainImage">
+                                                <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                                <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                    <img src="{{config.cloudfront_server + '/' + config.imagesSizes.small + '/' + ad.mainImage.relativePath}}"
+                                                         alt="{{ad.title}}"
+                                                         [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                                </a>
+                                                <span class="tg-photocount">{{ad.images?.length}}
+                                                    foto{{ad.images?.length > 1 ? 's' : ''}}</span>
+                                            </figure>
+
+                                            <figure *ngIf="!ad.mainImage">
+                                                <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                                <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                    <img src="assets/images/no-image2.png" alt="{{ad.title}}"
+                                                         [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                                </a>
+                                            </figure>
+                                            <div class="tg-adcontent">
+                                                <ul class="tg-pagesequence">
+                                                    <li><a href="javascript:void(0);">{{ad.category?.name}}</a></li>
+                                                    <li><a href="javascript:void(0);">{{ad.subcategory?.name}}</a></li>
+                                                </ul>
+                                                <div class="tg-adtitle">
+                                                    <h3><a href="javascript:void(0);"
+                                                           [routerLink]="['/anuncio', ad.slug]">{{ad.title}}</a>
+                                                    </h3>
+                                                    <span class="tg-adtitle-verified" *ngIf="ad.status == 'ACTIVE'"
+                                                          pTooltip="Aviso Verificado" tooltipPosition="top"></span>
+                                                    <span class="tg-adtitle-revision" *ngIf="ad.status == 'PENDING'"
+                                                          pTooltip="Aviso en Revisión" tooltipPosition="top"></span>
+                                                </div>
+                                                <time>{{ad.republishedDate | amTimeAgo | capitalize }}</time>
+                                                <div class="tg-adprice"><h4 *ngIf="ad.price">{{ad.currency + ad.price}}
+                                                    ({{config.priceTypeTexts[ad.priceType]}})</h4></div>
+                                                <address>{{ad.city?.name}}</address>
+                                                <fb-like href="{{host + '/anuncio/' + ad.slug}}"></fb-like>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </owl-carousel>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="relatedAds && relatedAds.response && relatedAds.response.length > 0">
+                    <div class="tg-youmayalsolike">
+                        <div class="tg-sectionhead">
+                            <div class="tg-title">
+                                <h2>También te puede interesar</h2>
+                            </div>
+                            <div class="tg-description">
+                                <p>Avisos relacionados</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="tg-ads">
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let ad of relatedAds.response">
+                                    <div class="tg-ad tg-verifiedad">
+                                        <figure *ngIf="ad.mainImage">
+                                            <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                            <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                <img src="{{config.cloudfront_server + '/' + config.imagesSizes.small + '/' + ad.mainImage.relativePath}}"
+                                                     alt="{{ad.title}}"
+                                                     [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                            </a>
+                                            <span class="tg-photocount">{{ad.images?.length}}
+                                                foto{{ad.images?.length > 1 ? 's' : ''}}</span>
+                                        </figure>
+
+                                        <figure *ngIf="!ad.mainImage">
+                                            <!--<span class="tg-themetag tg-featuretag">destacado</span>-->
+                                            <a href="javascript:void(0);" [routerLink]="['/anuncio', ad.slug]">
+                                                <img src="assets/images/no-image2.png" alt="{{ad.title}}"
+                                                     [ngClass]="{ 'img-list': listType === 'list', 'img-grid': listType === 'grid' }">
+                                            </a>
+                                        </figure>
+                                        <div class="tg-adcontent">
+                                            <ul class="tg-pagesequence">
+                                                <li><a href="javascript:void(0);">{{ad.category?.name}}</a></li>
+                                                <li><a href="javascript:void(0);">{{ad.subcategory?.name}}</a></li>
+                                            </ul>
+                                            <div class="tg-adtitle">
+                                                <h3><a href="javascript:void(0);"
+                                                       [routerLink]="['/anuncio', ad.slug]">{{ad.title}}</a>
+                                                </h3>
+                                                <span class="tg-adtitle-verified" *ngIf="ad.status == 'ACTIVE'"
+                                                      pTooltip="Aviso Verificado" tooltipPosition="top"></span>
+                                                <span class="tg-adtitle-revision" *ngIf="ad.status == 'PENDING'"
+                                                      pTooltip="Aviso en Revisión" tooltipPosition="top"></span>
+                                            </div>
+                                            <time>{{ad.republishedDate | amTimeAgo | capitalize }}</time>
+                                            <div class="tg-adprice"><h4 *ngIf="ad.price">{{ad.currency + ad.price}}
+                                                ({{config.priceTypeTexts[ad.priceType]}})</h4></div>
+                                            <address>{{ad.city?.name}}</address>
+                                            <fb-like href="{{host + '/anuncio/' + ad.slug}}"></fb-like>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="tg-viewallbox">
+                                <a class="tg-btn" href="javascript:void(0)">View All</a>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--************************************
+            About Us End
+    *************************************-->
+</main>
+<!--************************************
+        Main End
+*************************************-->
+
+<app-login-modal (onLoggedIn)="loggedIn($event)"></app-login-modal>
+
+<div class="modal fade tg-thememodal tg-citymodal tg-modalreportad in" tabindex="-1" role="dialog"
+     id="modal-report-spam">
+    <div class="modal-dialog tg-thememodaldialog" role="document">
+        <button type="button" class="tg-close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="modal-content tg-thememodalcontent">
+            <div class="tg-reportthisadbox">
+                <div class="tg-reportthisadtitle">
+                    <h2>Reportar este Aviso</h2>
+                </div>
+                <form [formGroup]="reportForm" class="tg-formtheme tg-formreportthisad" (ngSubmit)="onSubmitReport()">
+                    <h3>Elige una razón:</h3>
+                    <fieldset>
+                        <div class="tg-radio">
+                            <input id="tg-radioone" type="radio" name="reason" value="ILLEGAL" checked formControlName="reason">
+                            <label for="tg-radioone">Es ilegal / fraudulento</label>
+                        </div>
+                        <div class="tg-radio">
+                            <input id="tg-radiotwo" type="radio" name="reason" value="SPAM" formControlName="reason">
+                            <label for="tg-radiotwo">Es spam / publicidad</label>
+                        </div>
+                        <div class="tg-radio">
+                            <input id="tg-radiothree" type="radio" name="reason" value="DUPLICATE" formControlName="reason">
+                            <label for="tg-radiothree">Es un aviso duplicado</label>
+                        </div>
+                        <div class="tg-radio">
+                            <input id="tg-radiofour" type="radio" name="reason" value="CATEGORY" formControlName="reason">
+                            <label for="tg-radiofour">Está en la categoría incorrecta</label>
+                        </div>
+                        <div class="tg-radio">
+                            <input id="tg-radiofive" type="radio" name="reason" value="RULES" formControlName="reason">
+                            <label for="tg-radiofive">El aviso no cumple los <span class="tg-themecolor">términos y condiciones</span></label>
+                        </div>
+                        <span class="help-block text-danger" *ngIf="reportForm.get('reason').invalid && (reportForm.get('reason').dirty || reportForm.get('reason').touched)">
+                                <small *ngIf="reportForm.get('reason').errors.required">Selecciona un motivo</small>
+                            </span>
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" formControlName="email" placeholder="Email*">
+                            <span class="help-block text-danger" *ngIf="reportForm.get('email').invalid && (reportForm.get('email').dirty || reportForm.get('email').touched)">
+                                <small *ngIf="reportForm.get('email').errors.required">Debes ingresar tu email</small>
+                                <small *ngIf="reportForm.get('email').errors.pattern">El email ingresado es inválido</small>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" placeholder="Agrega más detalles*" formControlName="message" rows="4"></textarea>
+                            <span class="help-block text-danger" *ngIf="reportForm.get('message').invalid && (reportForm.get('message').dirty || reportForm.get('message').touched)">
+                                <small *ngIf="reportForm.get('message').errors.required">Por favor, explícanos el motivo de tu reporte</small>
+                                <small *ngIf="reportForm.get('message').errors.minlength">El mensaje requiere al menos 10 caracteres</small>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <re-captcha formControlName="recaptcha"></re-captcha>
+                            <span class="help-block text-danger" *ngIf="reportForm.get('recaptcha').invalid && (reportForm.get('recaptcha').dirty || reportForm.get('recaptcha').touched)">
+                                                    <small *ngIf="reportForm.get('recaptcha').errors.required">Debes verificar mediante ReCaptcha</small>
+                                                    <small *ngIf="reportForm.get('recaptcha').errors.invalid">La verificación resultó inválida</small>
+                                                </span>
+                        </div>
+                        <div class="tg-btns">
+                            <button class="tg-btn" type="submit" [disabled]="!reportForm.valid">Enviar</button>
+                            <button class="tg-btn" type="button" (click)="onCancelReport()">Cancelar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

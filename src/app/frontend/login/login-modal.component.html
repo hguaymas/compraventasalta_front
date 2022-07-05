@@ -1,0 +1,84 @@
+<!-- MODAL LOGIN -->
+<div class="modal fade tg-thememodal tg-loginmodal tg-modalpriceconverter in" tabindex="-1" role="dialog"
+     id="modal-login">
+    <div class="modal-dialog tg-thememodaldialog" role="document">
+        <button type="button" class="tg-close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <div class="modal-content tg-thememodalcontent">
+            <div class="tg-logingarea">
+                <h2 [ngStyle]="{display: showLogin}">Ingresar</h2>
+                <h2 [ngStyle]="{display: showRegister}">Registrarse</h2>
+                <div class="row mt-10">
+                    <div class="col-md-12">
+                        <ul class="tg-sociallogingsignup">
+                            <li class="tg-facebook">
+                                <a href="javascript:void(0);" (click)="loginWithFacebook()">
+                                    <i class="fa fa-facebook"></i>
+                                    <span [ngStyle]="{display: showLogin}">Ingresar con <strong>Facebook</strong></span>
+                                    <span [ngStyle]="{display: showRegister}">Registrarse con <strong>Facebook</strong></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="tg-iconseprator"><i><img src="assets/images/icons/img-36.png" alt="image description"></i></span>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <form [formGroup]="formLogin" (ngSubmit)="onSubmitLogin(formLogin.value)" class="tg-formtheme tg-formloging" [ngStyle]="{display: showLogin}">
+                            <fieldset>
+                                <div class="alert alert-danger" role="alert" *ngIf="errorLogin">{{errorLogin}}</div>
+                                <div class="form-group">
+                                    <input formControlName="loginEmail" type="text" name="email" class="form-control" placeholder="Email">
+                                    <span class="help-block text-danger" *ngIf="formLogin.get('loginEmail').touched && formLogin.get('loginEmail').hasError('required')"><small>El email es obligatorio</small></span>
+                                    <span class="help-block text-danger" *ngIf="formLogin.get('loginEmail').touched && formLogin.get('loginEmail').hasError('pattern')"><small>El email es inválido</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <input formControlName="loginPassword" type="password" name="loginPassword" class="form-control" placeholder="Contraseña">
+                                    <span class="help-block text-danger" *ngIf="formLogin.get('loginPassword').touched && formLogin.get('loginPassword').hasError('required')"><small>La contraseña es obligatoria</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <a class="tg-forgetpassword" routerLink="/recuperar-password" target="_blank">¿Olvidaste tu Contraseña?</a>
+                                </div>
+                                <div class="form-group">
+                                    <button class="tg-btn" [disabled]="!formLogin.valid">Ingresar</button>
+                                    <a class="tg-forgetpassword" href="javascript:void(0);" (click)="onRegister()">Registrarme</a>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                        <form [formGroup]="formRegister" (ngSubmit)="onSubmitRegister(formRegister.value)" class="tg-formtheme tg-formloging" [ngStyle]="{display: showRegister}">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input formControlName="regEmail" type="text" name="regEmail" class="form-control" placeholder="Email">
+                                    <span class="help-block text-danger" *ngIf="formRegister.get('regEmail').touched && formRegister.get('regEmail').hasError('required')"><small>El email es obligatorio</small></span>
+                                    <span class="help-block text-danger" *ngIf="formRegister.get('regEmail').touched && formRegister.get('regEmail').hasError('pattern')"><small>El email es inválido</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <input formControlName="regPassword" type="password" name="regPassword" class="form-control" placeholder="Contraseña">
+                                    <span class="help-block text-danger" *ngIf="formRegister.get('regPassword').touched && formRegister.get('regPassword').hasError('required')"><small>La contraseña es obligatoria</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <input formControlName="regPasswordConfirm" type="password" name="regPasswordConfirm" class="form-control" placeholder="Repite la contraseña">
+                                    <span class="help-block text-danger" *ngIf="formRegister.get('regPasswordConfirm').touched && formRegister.get('regPasswordConfirm').hasError('required')"><small>La contraseña es obligatoria</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <re-captcha formControlName="regRecaptcha"></re-captcha>
+                                    <span class="help-block text-danger"
+                                          *ngIf="formRegister.get('regRecaptcha').touched && formRegister.get('regRecaptcha').hasError('required')"><small>La verificación es obligatoria</small></span>
+                                    <span class="help-block text-danger"
+                                          *ngIf="formRegister.get('regRecaptcha').touched && formRegister.get('regRecaptcha').hasError('invalid')"><small>La verificación resultó inválida</small></span>
+                                </div>
+                                <div class="form-group">
+                                    <button class="tg-btn" [disabled]="!formRegister.valid">Registrarme</button>
+                                    <a class="tg-forgetpassword" href="javascript:void(0);" (click)="onLogin()">Ingresar</a>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
